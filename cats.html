@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Cats</title>
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <div id="app">
+    <v-app>
+      <v-content>
+        <v-container>
+         <center><h1>Random cat pictures to brighten your day !</h1></center>
+           
+            
+<br>
+            <v-layout row wrap>
+                <v-flex xs12 >
+                <v-card flat tile class="d-flex">
+                    <v-img :src="image.url" contain width="400" 
+     height="500">
+                    </v-img>
+                </v-card>
+                </v-flex>
+            </v-layout><br>
+<v-layout align-center justify-center>
+                <v-btn color="blue" dark large @click="loadNextImage" >
+                    View Another
+                </v-btn>
+            </v-layout>
+        </v-container>
+      </v-content>
+    </v-app>
+  </div>
+ 
+  <script>
+    new Vue({ 
+        el: '#app',
+        vuetify: new Vuetify(),
+        data: {
+            image: { url: ""}
+        },
+        created(){
+            this.loadNextImage();
+        } ,
+        methods:{
+            async loadNextImage()
+            {
+                try{
+                    axios.defaults.headers.common['x-api-key'] = "5b0cefea-7020-401e-97fc-6336232f0102" 
+
+                    let response = await axios.get('https://api.thecatapi.com/v1/images/search', { params: { limit:1} } ) 
+                    
+                    this.image = response.data[0] 
+
+                    console.log("id:", this.image.id)
+                    console.log("url:", this.image.url)
+
+                }catch(err){
+                    console.log(err)
+                }
+            }
+        }
+    })
+  </script>
+</body>
+</html>
